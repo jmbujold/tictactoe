@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<body>
+<style>
+
+td{	border: 2px solid black;
+	height:100px;
+   	width:100px;
+    	color:black;
+	font-size:50px;
+	text-align:center;
+	font-family: "Courier New", sans-serif;
+	margin:15px;
+	font-weight:500;
+	
+    }
+td:hover{
+	box-shadow:0 0 15px grey;
+    }
+</style>
+
+
+
+<table>
+  <tr>
+    <td id="s0" class="tile"></td>
+    <td id="s1" class="tile"></td>
+    <td id="s2" class="tile"></td>
+  </tr>
+  <tr>
+    <td id="s3" class="tile"></td>
+    <td id="s4" class="tile"></td>
+    <td id="s5" class="tile"></td>
+  </tr>
+  <tr>
+    <td id="s6" class="tile"></td>
+    <td id="s7" class="tile"></td>
+    <td id="s8" class="tile"></td>
+  </tr>
+</table>
+
+<h3 id="message">Click to play</h3>
+
+<button onclick="restart()">RESTART</button>
+
+<script>
+var player = "X";
+var computer = "O";
+var squares = ["","","","","","","","",""];
+var n = 0;
+var gameState = true;
+var winCondition = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+
+function checkAvailable(n){
+     if (squares[n] === ""){
+	  document.getElementById("s"+n).style.backgroundColor = "Lavender";
+      document.getElementById("s"+n).innerHTML = computer;
+      squares[n] = "O";
+      }
+     else{n = Math.floor(Math.random() * 9 + 1);
+     	checkAvailable(n)}
+}
+
+function restart(){
+	squares = ["","","","","","","","",""];
+	gameState = true;
+	for(let i=0; i<=8; i++){
+	document.getElementById("s"+i).style.backgroundColor = "White";
+      	document.getElementById("s"+i).innerHTML = "";
+	document.getElementById("s"+i).style.fontWeight = "500";
+	playMessage();
+	}
+}
+
+function boldSquares(){
+
+	for(let i=0; i<=8;i++){
+   	 if(squares[i] ===""){squares[i] = "e"};}
+
+	for(let i = 0; i<=8; i++){
+	    if(squares[(winCondition[i][0])] === squares[(winCondition[i][1])] && squares[(winCondition[i][1])] === squares[(winCondition[i][2])]){
+	document.getElementById("s"+winCondition[i][0]).style.fontWeight = "900";
+	document.getElementById("s"+winCondition[i][1]).style.fontWeight = "900";
+	document.getElementById("s"+winCondition[i][2]).style.fontWeight = "900";
+		}
+   	}
+}
+
+function checkWin(){
+	if(
+    	(squares[0] === "X" && squares[1] === "X" && squares[2] === "X")
+        || (squares[3] === "X" && squares[4] === "X" && squares[5] === "X")
+        || (squares[6] === "X" && squares[7] === "X" && squares[8] === "X")
+        || (squares[0] === "X" && squares[3] === "X" && squares[6] === "X")
+        || (squares[1] === "X" && squares[4] === "X" && squares[7] === "X")
+        || (squares[2] === "X" && squares[5] === "X" && squares[8] === "X")
+        || (squares[0] === "X" && squares[4] === "X" && squares[8] === "X")
+        || (squares[2] === "X" && squares[4] === "X" && squares[6] === "X")
+        ){
+	document.getElementById("message").innerHTML = "You are a Winner!";
+	gameState = false;
+	boldSquares();
+    	}
+	if(
+    	(squares[0] === "O" && squares[1] === "O" && squares[2] === "O")
+        || (squares[3] === "O" && squares[4] === "O" && squares[5] === "O")
+        || (squares[6] === "O" && squares[7] === "O" && squares[8] === "O")
+        || (squares[0] === "O" && squares[3] === "O" && squares[6] === "O")
+        || (squares[1] === "O" && squares[4] === "O" && squares[7] === "O")
+        || (squares[2] === "O" && squares[5] === "O" && squares[8] === "O")
+        || (squares[0] === "O" && squares[4] === "O" && squares[8] === "O")
+        || (squares[2] === "O" && squares[4] === "O" && squares[6] === "O")
+        ){
+	document.getElementById("message").innerHTML = "You are a Loser :(!";
+	gameState = false;
+	boldSquares();
+    	}
+
+    }
+
+function updateSquare(n){
+  if(squares[n] === "" && gameState){
+      document.getElementById("s"+n).style.backgroundColor = "Lavender";
+      document.getElementById("s"+n).innerHTML = player;
+	}
+	squares[n] = "X";
+	checkWin();
+	if(gameState){
+      		r = Math.floor(Math.random() * 9 + 1);
+      		checkAvailable(r);
+	}
+	checkWin();
+     }
+
+
+
+function playMessage(){document.getElementById("message").innerHTML = "You are playing";}
+
+s0.addEventListener("click", function(){
+	updateSquare(0);
+	});
+s1.addEventListener("click", function(){
+	updateSquare(1);
+	});
+s2.addEventListener("click", function(){
+	updateSquare(2);
+	});
+s3.addEventListener("click", function(){
+	updateSquare(3);
+	});
+s4.addEventListener("click", function(){
+	updateSquare(4);
+	});
+s5.addEventListener("click", function(){
+	updateSquare(5);
+	});
+s6.addEventListener("click", function(){
+	updateSquare(6);
+	});
+s7.addEventListener("click", function(){
+	updateSquare(7);
+	});
+s8.addEventListener("click", function(){
+	updateSquare(8);
+	});
+    
+</script>
+
+</body>
+</html>
